@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <link rel="icon" href="/static/img/Logo.PNG">
+        <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/cadastros.css">
+        <link rel="stylesheet" type="text/css" href="/static/css-forms/util.css">
+        <link rel="stylesheet" type="text/css" href="/static/css-forms/main.css">
+		<title>Orçamentos</title>
+	</head>
+	<body>
+		<div>
+			<img src="static/img/Logo.PNG" class="logo">
+		</div>
+        <form class="contact1-form validate-form form_principal" method="POST" action="logar" onsubmit="return verifica();">
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="email" name="user" placeholder="Usuário">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="password" name="pwd" placeholder="Senha">
+            </div>
+            <div class="container-contact1-form-btn">
+                    <button class="contact1-form-btn">
+                    <span>
+                        Entrar
+                    </span>
+                </button>
+            </div>
+            <!-- Show error messages -->
+            <% if (erro) { %>
+                <script>alert("Login ou senha errados!")</script>
+            <% } %>
+        </form>
+	</body>
+</html>

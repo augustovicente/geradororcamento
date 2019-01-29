@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="static/img/Logo.PNG">
+        <link rel="stylesheet" type="text/css" href="static/css/index.css">
+        <link rel="stylesheet" type="text/css" href="static/css-forms/main.css">
+        <link rel="stylesheet" type="text/css" href="static/css/cadastros.css">
+		<title>Fornecedores</title>
+	</head>
+	<body>
+        <!-- Show confirm messages -->
+        <% if (confirm) { %>
+            <script>alert("<%= message %>")</script>
+        <% } %>
+        <div onclick="document.location.href = '/';" class="div_voltar">
+            <img class="back_image" src="static/img/back.png" alt="">
+            <p  class="text_voltar">Voltar</p>
+        </div>
+		<div class="itens_existentes header_new_orcamento">
+            <div class="wrap-input1 validate-input item_orcamento">
+                <input class="input1" type="text" id="filtro_fornecedores" placeholder="Filtro">
+            </div>
+            <div class="wrap-input1 validate-input item_orcamento">
+                <div class="custom-select">
+                    <select class="input1" id="lista">
+                        <option value="0" selected disabled>Selecione um fornecedor</option>
+                        <!-- Loads the options -->
+                        <% if (data) { %>
+                            <% data.forEach(row => { %>
+                                <option value="<%=row.id %>"><%= row.id+" - "+row.nome+" ("+row.cpfcnpj+")" %></option>
+                            <% }); %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="container-contact1-form-btn">
+            <button class="contact1-form-btn"  onclick="document.location.href = 'fornecedor/inserir';">
+                <span>
+                    Novo cadastro
+                </span>
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <button class="contact1-form-btn"  onclick="muda_pagina()">
+                <span>
+                    Selecionar
+                </span>
+            </button>
+        </div>
+        <script src="static/js/jquery-3.3.1.min.js" type="text/javascript"></script> 
+        <script src="static/js/fornecedor.js"></script>
+        <script src="static/js/geral.js"></script>
+        <script>
+            window.onload = function() 
+            {
+                faz_filtro("#lista", '#filtro_fornecedores');
+            };
+        </script>
+    </body>
+    <footer><img src="static/img/Logo.PNG" class="logo"></footer>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <link rel="icon" href="../../../static/img/Logo.PNG">
+        <link rel="stylesheet" type="text/css" href="../../../static/css/index.css">
+        <link rel="stylesheet" type="text/css" href="../../../static/css/cadastros.css">
+        <link rel="stylesheet" type="text/css" href="../../../static/css-forms/util.css">
+        <link rel="stylesheet" type="text/css" href="../../../static/css-forms/main.css">
+		<title>Cadastro de matérias primas</title>
+    </head>
+    <body>
+        <div onclick="document.location.href = '../../especifica';" class="div_voltar">
+            <img class="back_image" src="../../../static/img/back.png" alt="">
+            <p  class="text_voltar">Voltar</p>
+        </div>
+        <br/>
+        <form class="contact1-form validate-form form_principal" method="POST" action="../alterar/<%= data.codigo %>" onsubmit="return verifica();">
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="nome" name="nome" placeholder="Nome" value="<%= data.nome %>">
+            </div>
+            <div class="header_new_orcamento">
+                <div class="wrap-input1 validate-input item_orcamento">
+                    <input class="input1" type="text" id="filtro_fornecedores" placeholder="Filtro">
+                </div>
+                <div class="custom-select wrap-input1 validate-input item_orcamento">
+                    <select class="input1" id="fornecedor" name="fornecedor">
+                        <option value="0" disabled>Selecione um fornecedor</option>
+                        <!-- Loads the options -->
+                        <% if (fornecedores) { %>
+                            <% fornecedores.forEach(row => { %>
+                                <% if (row.id == data.fornecedor) { %>
+                                    <option value="<%=row.id %>" selected><%= row.id+" - "+row.nome+" ("+row.cpfcnpj+")" %></option>
+                                <% } else { %>
+                                    <option value="<%=row.id %>"><%= row.id+" - "+row.nome+" ("+row.cpfcnpj+")" %></option>
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="marca" placeholder="Marca" name="marca" value="<%= data.marca %>">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="number" min="0" id="quantidade" name="quantidade" value="<%= data.quantidade %>" placeholder="Quantidade no estoque">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="unidade" placeholder="Nome da Unidade" value="<%= data.unidade %>" name="unidade">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="number" id="valor_unitario" step=".01"  value="<%= data.valor_unitario %>" placeholder="Valor Unitário em R$" name="valor_unitario">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="number" id="intervalo" name="intervalo" step=".01"  value="<%= data.intervalo %>" placeholder="Intervalo">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="demarcacao" name="demarcacao" value="<%= data.demarcacao %>" placeholder="Nome da demarcação (ex: pilares)">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <textarea class="input1" id="descricao" placeholder="Descrição" name="descricao"><%= data.descricao %></textarea>
+            </div>
+            <div class="container-contact1-form-btn">
+                <button class="contact1-form-btn">
+                    <span>
+                        Editar
+                    </span>
+                </button>
+                &nbsp;&nbsp;
+                <button class="contact1-form-btn" type="button" onclick="document.location.href = '../excluir/<%= data.codigo %>';">
+                    <span>
+                        Excluir
+                    </span>
+                </button>
+            </div>
+            <br/>
+            <script src="../../../static/js/jquery-3.3.1.min.js" type="text/javascript"></script> 
+            <script src="../../../static/js/materia_prima_geral.js"></script>
+            <script src="../../../static/js/geral.js"></script>
+            <script>
+                window.onload = function() 
+                {
+                    faz_filtro("#fornecedor", '#filtro_fornecedores');
+                };
+            </script>
+        </form>
+    </body>
+    <footer><img src="../../../static/img/Logo.PNG" class="logo"></footer>
+</html>

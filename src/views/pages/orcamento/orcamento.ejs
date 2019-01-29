@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <link rel="icon" href="static/img/Logo.PNG">
+        <link rel="stylesheet" type="text/css" href="static/css/index.css">
+		<link rel="stylesheet" type="text/css" href="static/css/cadastros.css">
+		<link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="static/assets/css/styles.css">
+		<title>Orçamentos</title>
+	</head>
+	<body>
+		<div onclick="document.location.href = '/';" class="div_voltar">
+			<img class="back_image" src="static/img/back.png" alt="">
+			<p  class="text_voltar">Voltar</p>
+		</div>
+        <div>
+			<img src="static/img/Logo.PNG" class="logo">
+		</div>
+		<div style="padding:50px;height:40%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 button_pag" onclick="document.location.href = 'orcamento/novo';">
+						<img src="static/img/add_orc.png" class="icone">
+						<p class="legenda">Novo orçamento</p>
+					</div>
+					<div class="col-md-6 button_pag" onclick="document.location.href = 'orcamento/impressao';">
+						<img src="static/img/print.png" class="icone">
+						<p class="legenda">Imprimir orçamentos</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="padding:50px;height:40%;">
+			<div class="container">
+				<div class="row">
+					<div class="button_pag" onclick="document.location.href = 'orcamento/status';">
+						<img src="static/img/check.png" class="icone">
+						<p class="legenda">Atualizar status de um orçamento</p>
+					</div>
+					<div class="button_pag" onclick="document.location.href = 'orcamento/relacao';">
+						<img src="static/img/cadastro.png" class="icone">
+						<p class="legenda">Relação de aprovação dos orçamentos</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="static/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+		<script src="static/js/geral.js"></script>
+	</body>
+</html>

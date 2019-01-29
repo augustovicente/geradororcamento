@@ -1,0 +1,51 @@
+.back_image{
+    width: 50px;
+}
+.text_voltar{
+    display: block;
+    float: right;
+    margin-top: 1px;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 17px;
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    color: black;  
+}
+.div_voltar{
+    width: 100px;
+    cursor: pointer;
+}
+.form_principal{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.custom-select select{
+    border: none;
+    padding: 15px 16px;
+    cursor: pointer;
+    border-radius: 40px;
+}
+.itens_existentes{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    width: 450px;
+}
+.header_new_orcamento{
+    text-align: center;
+    display: grid;
+}
+.item_orcamento{
+    grid-row: 1 / span 1;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.item_orcamento_valor{
+    grid-row: 1 / span 1;
+    /* margin-left: 5px; */
+}

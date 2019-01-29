@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <link rel="icon" href="../static/img/Logo.PNG">
+        <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+        <link rel="stylesheet" type="text/css" href="../static/css/cadastros.css">
+        <link rel="stylesheet" type="text/css" href="../static/css-forms/util.css">
+        <link rel="stylesheet" type="text/css" href="../static/css-forms/main.css">
+		<title>Cadastro de Clientes</title>
+    </head>
+    <body>
+        <div onclick="document.location.href = '../cliente';" class="div_voltar">
+            <img class="back_image" src="../static/img/back.png" alt="">
+            <p  class="text_voltar">Voltar</p>
+        </div>
+        <br/>
+        <br/>
+        <form class="contact1-form validate-form form_principal" method="POST" action="inserir">
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="nome" name="nome" placeholder="Nome">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="cpf_cnpj" name="cpfcnpj" placeholder="CPF/CNPJ">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="telefone" name="telefone" placeholder="Telefone">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="contato" name="contato" placeholder="Contato">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="email" name="email" placeholder="Email">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="wpp" name="wpp" placeholder="WhatsApp">
+            </div>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" id="end" name="endereco" placeholder="Endereço">
+            </div>
+            <div class="container-contact1-form-btn">
+                <button class="contact1-form-btn">
+                    <span>
+                        Cadastrar
+                    </span>
+                </button>
+            </div>
+            <br/>
+        </form>
+        <script src="../static/js/jquery-3.3.1.min.js" type="text/javascript"></script> 
+        <script src="../static/js/cliente.js"></script>
+        <script src="../static/js/geral.js"></script>
+    </body>
+    <footer><img src="../static/img/Logo.PNG" class="logo"></footer>
+</html>
