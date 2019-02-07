@@ -118,6 +118,7 @@ function carregar(dados)
 {
     if(sessionStorage.getItem('orcamentos'))
     {
+        (sessionStorage.getItem('orcamentos'))
         if(sessionStorage.getItem('orcamentos') != undefined && sessionStorage.getItem('orcamentos') != "" && sessionStorage.getItem('orcamentos') != "null")
         {
             var table = document.getElementById("table");
@@ -231,7 +232,10 @@ function carregar(dados)
                                 preco.innerHTML = transform_to_preco((parseFloat(materiaprima[1])*parseFloat(materiaprima[4]))+(parseFloat(materiaprima[1])*
                                                 parseFloat(materiaprima[4])*parseFloat(materiaprima[2])));
                                 // especificade da materia prima
-                                demarcacao.innerHTML = parseInt((parseFloat(materiaprima[1])/parseFloat(materiaprima[7])+1))+" "+materiaprima[8];
+                                var qtd_mp = parseFloat(materiaprima[1]);
+                                var intervalo = parseFloat(materiaprima[7]);
+                                var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
+                                demarcacao.innerHTML = parseInt(((qtd_mp/intervalo)+resto))+" "+materiaprima[8];
                                 // coluna de remover
                                 remover.innerHTML = "REMOVER";
                                 remover.className = "remove";
@@ -318,6 +322,7 @@ function salvar()
     else
     {
         $('#form1').attr('action', 'novo/salvar/'+sessionStorage.getItem('orcamentos')+'/'+transform_to_num(document.getElementById("valor_total").innerHTML));
+        sessionStorage.clear();
         return true;
     }
 }

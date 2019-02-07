@@ -132,7 +132,7 @@ orcamento.salva = (req, res) =>
 							dir2 = 'src/public/img-orc/'+id_orcamento[0].id+'-img2.jpg';
 							img2.mv(dir2, function(err) {});
 						}
-						conn.query('UPDATE orcamento set imagem1 = ?, imagem2 = ?', [dir1 , dir2], (err, rows) => 
+						conn.query('UPDATE orcamento set imagem1 = ?, imagem2 = ? where codigo = ?', [dir1 , dir2, id_orcamento[0].id], (err, rows) => 
 						{
 							if(err) 
 							{
@@ -146,40 +146,48 @@ orcamento.salva = (req, res) =>
 								}
 								else
 								{
+									var timer = 0;
 									for(let produto of produtos)
 									{
-										conn.query('INSERT INTO produto_orcamento set codigo_or = last_insert_id(), nome = ?', produto[0], (err, rows) =>
+										setTimeout(() => 
 										{
-											if(err) 
+											conn.query('INSERT INTO produto_orcamento set codigo_or = ?, nome = ?', [id_orcamento[0].id, produto[0]], (err, rows) =>
 											{
-												res.json(err);
-											}
-											else
-											{
-												conn.query('SELECT last_insert_id() as id', (err, id_produto) =>
+												if(err) 
 												{
-													if(err) 
+													res.json(err);
+												}
+												else
+												{
+													conn.query('SELECT last_insert_id() as id', (err, id_produto) =>
 													{
-														res.json(err);
-													}
-													else
-													{
-														for(let mp of produto[2])
+														if(err) 
 														{
-															conn.query('INSERT INTO materia_prima_do_produto set codigo_mp = ?, codigo_pr = ?, qtd = ?', [mp[0], id_produto[0].id, mp[1]], (err, rows) =>
+															res.json(err);
+														}
+														else
+														{
+															for(let mp of produto[2])
 															{
-																if(err) 
+																conn.query('INSERT INTO materia_prima_do_produto set codigo_mp = ?, codigo_pr = ?, qtd = ?', [mp[0], id_produto[0].id, mp[1]], (err, rows) =>
 																{
-																	res.json(err);
-																}
-															});
-														};
-														res.redirect('../../../impressao/pdf/'+id_orcamento[0].id);
-													}
-												});
-											}
-										});
+																	if(err)
+																	{
+																		res.json(err);
+																	}
+																});
+															};
+														}
+													});
+												}
+											});
+										}, timer);
+										timer += 1000;
 									};
+									setTimeout(() => 
+									{
+										res.redirect('../../../impressao/pdf/'+id_orcamento[0].id);
+									}, timer);
 								}
 							}
 						});
@@ -266,14 +274,13 @@ orcamento.pdf = (req, res) =>
 							doc.fontSize(14).text('Emissão: '+get_date(data.toISOString()), 55, altura);
 							doc.fontSize(14).text('Orçamento nº: '+id, 270, altura);
 							altura += 20;
-							doc.fontSize(10).text('Valor Total: '+transform_to_preco(orcamento.valor_total), 55, altura);
-							altura += 15;
 							doc.fontSize(10).text('Cliente: '+orcamento.nome, 55, altura);
 							altura += 15;
 							doc.fontSize(10).text('E-mail: '+orcamento.email, 55, altura);
 							altura += 15;
-							doc.fontSize(10).text('Forma de pag.: '+orcamento.forma_pagamento, 55, altura);
+							doc.fontSize(10).text('Endereço: '+orcamento.endereco, 55, altura);
 							altura += 15;
+							// altura += 15;
 							doc.fontSize(10).text('Tel: '+ orcamento.telefone, 55, altura);
 							altura += 15;
 							doc.fontSize(10).text('Prazo de entrega: '+ orcamento.prazo, 55, altura);
@@ -282,8 +289,6 @@ orcamento.pdf = (req, res) =>
 							// produtos do orçamento
 							produtos.forEach(produto => 
 							{
-								altura += 10;
-								doc.fontSize(12).text('Produto: '+produto.nome, 55, altura);
 								conn.query("select * from pdf_materia_prima_produtos where produto = "+produto.cod, (err, materia_prima) => 
 								{
 									if(err) 
@@ -291,7 +296,9 @@ orcamento.pdf = (req, res) =>
 										res.json(err);
 									}
 									else
-									{
+									{	
+										altura += 15;
+										doc.fontSize(12).text('Produto: '+produto.nome, 55, altura);
 										materia_prima.forEach(row => 
 										{
 											altura += 15;
@@ -326,7 +333,10 @@ orcamento.pdf = (req, res) =>
 													doc.fontSize(10).text('Código: '+row.codigo, 60, altura);
 													doc.fontSize(10).text('Nome: '+(row.nome.length > 25 ? row.nome.substring(0, 25)+"..." : row.nome), 130, altura);
 													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
-													doc.fontSize(10).text(parseInt((parseFloat(row.qtd)/parseFloat(row.intervalo)+1))+" "+row.demarcacao.substring(0, 10), 470, altura);
+													var qtd_mp = parseFloat(row.qtd);
+													var intervalo = parseFloat(row.intervalo);
+													var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
+													doc.fontSize(10).text(parseInt((qtd_mp/intervalo)+resto)+" "+row.demarcacao.substring(0, 10), 470, altura);
 												}
 											}
 										});
@@ -340,17 +350,17 @@ orcamento.pdf = (req, res) =>
 								{
 									doc.image(orcamento.imagem1, 40, altura+30, 
 									{
-										fit: [250, 300]
+										fit: [250, 200]
 									});
-									obs = altura + 30 + 250;
+									obs = (altura + 30) + 200 + 10;
 								}
 								if(orcamento.imagem2 != "" && orcamento.imagem2 != undefined && orcamento.imagem2 != null)
 								{
 									doc.image(orcamento.imagem2, 295, altura+30,
 									{
-										fit: [250, 300]
+										fit: [250, 200]
 									});
-									obs = altura + 30 + 250;
+									obs = (altura + 30) + 200 + 10;
 								}
 								if(orcamento.observacao != "" && orcamento.observacao != undefined && orcamento.observacao != null)
 								{
@@ -358,10 +368,12 @@ orcamento.pdf = (req, res) =>
 									var texts = orcamento.observacao.split(/\r?\n/g);
 									texts.forEach(text => 
 									{
-										doc.fontSize(8).text(text);
 										doc.moveDown();
+										doc.fontSize(8).text(text);
 									});
 								}
+								doc.fontSize(11).text('Valor Total: '+transform_to_preco(orcamento.valor_total), {align:"right"});
+								doc.fontSize(11).text('Forma de pag.: '+orcamento.forma_pagamento, {align:"right"});
 							}, 3000);
 							// finalizando
 							setTimeout(() => 
@@ -377,7 +389,7 @@ orcamento.pdf = (req, res) =>
 	}
 	else
 	{
-		res.redirect('../login');
+		res.redirect('../../../login');
 	}
 };
 orcamento.filtro = (req, res) => 

@@ -83,6 +83,7 @@
         <script src="../../static/js/orcamento/impressao.js"></script>
         <!-- Clear session -->
         <script>
+            sessionStorage.clear();
             var data = new Date();
             data = get_date2(data.toISOString());
             document.getElementById("date").value = data;

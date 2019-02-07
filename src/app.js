@@ -22,16 +22,16 @@ app.use(session({ secret: 'produnox'}));
 app.use(myConnection(mysql, 
 {
 	// ----------- credencials ------------
-	// host: 'mysql.produnox.kinghost.net',
-	// user: 'produnox',
-	// password: 'produnox1',
-	// port: 3306,
-	// database: 'produnox'
-	host: 'localhost',
-	user: 'root',
-	password: 'root',
+	host: 'mysql.produnox.kinghost.net',
+	user: 'produnox',
+	password: 'produnox1',
 	port: 3306,
 	database: 'produnox'
+	// host: 'localhost',
+	// user: 'root',
+	// password: 'root',
+	// port: 3306,
+	// database: 'produnox'
 }, 'single'));
 app.use(fileUpload());
 app.use(express.urlencoded({extended: false}));
