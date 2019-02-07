@@ -10,5 +10,7 @@ Além disso, o projeto proporciona um controle sobre o estoque gerado.
 ## Installing
 
 * Clone the folder
-* Install all dependencies: npm install
+* Install all dependencies: npm i
+* Run the DB script: db.sql
+* Change the DB credentials in the file src/app.js
 * Run "npm run dev" at the prompt in the cloned folder

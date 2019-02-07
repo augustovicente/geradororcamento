@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 app.use(session({ secret: 'produnox'}));
 app.use(myConnection(mysql, 
 {
-	// ----------- credencials ------------
+	// ----------- db credencials ------------
 	host: 'mysql.produnox.kinghost.net',
 	user: 'produnox',
 	password: 'produnox1',
