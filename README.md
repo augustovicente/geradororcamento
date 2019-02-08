@@ -12,5 +12,10 @@ Além disso, o projeto proporciona um controle sobre o estoque gerado.
 * Clone the folder
 * Install all dependencies: npm i
 * Run the DB script: db.sql
-* Change the DB credentials in the file src/app.js
+* Change the DB credentials in the file src/app.js 
+
+## Running
+
 * Run "npm run dev" at the prompt in the cloned folder
+* Login: produnox@hotmail.com 
+* Senha: isabM3t@is 
