@@ -158,6 +158,7 @@ function carregar(dados)
                 orcamento[2].forEach(mp => 
                 {
                     var materiaprima = JSON.parse(JSON.stringify(mp));
+                    var materiaprima_orig = JSON.parse(JSON.stringify(mp));
                     var margem = document.createElement("td");
                     var demarcacao = document.createElement("td");
                     var materia_prima = document.createElement("td");
@@ -194,7 +195,7 @@ function carregar(dados)
                                 {
                                     var index = findIndex(orcamento_bu[2], materiaprima.slice(0, 3));
                                     orcamento_bu[2][index] = orcamento_bu[2][index].slice(0, 3);
-                                    remover_item_mp(materia_prima, orcamento_bu);
+                                    remover_item_mp(materiaprima_orig, orcamento_bu);
                                 };
                                 // row de materia prima
                                 var row_table2 = document.createElement("tr");
@@ -243,7 +244,7 @@ function carregar(dados)
                                 {
                                     var orcamento_modificado = JSON.parse(JSON.stringify(orcamento));
                                     orcamento_modificado[2][0] = orcamento_modificado[2][0].slice(0, 3);
-                                    remover_item_mp(materia_prima, orcamento_modificado);
+                                    remover_item_mp(materiaprima_orig, orcamento_modificado);
                                 };
                                 // row de materia prima
                                 var row_table2 = document.createElement("tr");
