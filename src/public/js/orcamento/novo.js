@@ -46,7 +46,7 @@ function adicionar()
                 var produtos = JSON.parse(sessionStorage.getItem('orcamentos'));
                 var produto = JSON.parse(document.getElementById("lista_produto").value);
                 var index = findIndex(JSON.parse(sessionStorage.getItem('orcamentos')), JSON.parse(document.getElementById("lista_produto").value));
-                var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value];
+                var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value, 0];
                 produto[2].push(materia_prima);
                 produtos[index] = produto;
                 sessionStorage.setItem("orcamentos", JSON.stringify(produtos));
@@ -57,7 +57,7 @@ function adicionar()
                 var produtos = JSON.parse(sessionStorage.getItem('orcamentos'));
                 var produto = JSON.parse(document.getElementById("lista_produto").value);
                 var index = findIndex(JSON.parse(sessionStorage.getItem('orcamentos')), JSON.parse(document.getElementById("lista_produto").value));
-                var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value];
+                var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value, 0];
                 produto[2].push(materia_prima);
                 produtos[index] = produto;
                 sessionStorage.setItem("orcamentos", JSON.stringify(produtos));
@@ -69,7 +69,7 @@ function adicionar()
             var produtos = JSON.parse(sessionStorage.getItem('orcamentos'));
             var produto = JSON.parse(document.getElementById("lista_produto").value);
             var index = findIndex(JSON.parse(sessionStorage.getItem('orcamentos')), JSON.parse(document.getElementById("lista_produto").value));
-            var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value];
+            var materia_prima = [document.getElementById("lista").value, document.getElementById("qtd").value, document.getElementById("margem_lucro").value, 0];
             produto[2].push(materia_prima);
             produtos[index] = produto;
             sessionStorage.setItem("orcamentos", JSON.stringify(produtos));
@@ -158,6 +158,7 @@ function carregar(dados)
                 orcamento[2].forEach(mp => 
                 {
                     var materiaprima = JSON.parse(JSON.stringify(mp));
+                    materiaprima.pop();
                     var materiaprima_orig = JSON.parse(JSON.stringify(mp));
                     var margem = document.createElement("td");
                     var demarcacao = document.createElement("td");
@@ -193,8 +194,8 @@ function carregar(dados)
                                 remover.className = "remove"
                                 remover.onclick = function () 
                                 {
-                                    var index = findIndex(orcamento_bu[2], materiaprima.slice(0, 3));
-                                    orcamento_bu[2][index] = orcamento_bu[2][index].slice(0, 3);
+                                    var index = findIndex(orcamento_bu[2], mp.slice(0, 4));
+                                    orcamento_bu[2][index] = orcamento_bu[2][index].slice(0, 4);
                                     remover_item_mp(materiaprima_orig, orcamento_bu);
                                 };
                                 // row de materia prima
@@ -233,18 +234,32 @@ function carregar(dados)
                                 preco.innerHTML = transform_to_preco((parseFloat(materiaprima[1])*parseFloat(materiaprima[4]))+(parseFloat(materiaprima[1])*
                                                 parseFloat(materiaprima[4])*parseFloat(materiaprima[2])));
                                 // especificade da materia prima
+                                var input = document.createElement("input");
+                                var label = document.createElement("label");
                                 var qtd_mp = parseFloat(materiaprima[1]);
                                 var intervalo = parseFloat(materiaprima[7]);
                                 var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
-                                demarcacao.innerHTML = parseInt(((qtd_mp/intervalo)+resto))+" "+materiaprima[8];
+                                input.value = mp[3] == 0 ? parseInt(((qtd_mp/intervalo)+resto)) : mp[3];
+                                input.placeholder = "Qtd";
+                                input.style = "width: 50%; text-align: center";
+                                input.id = "id_input_intervalo"+materiaprima[0];
+                                input.onchange = function () 
+                                {
+                                    var index = findIndex(orcamento_bu[2], mp.slice(0, 4));
+                                    orcamento_bu[2][index] = orcamento_bu[2][index].slice(0, 4);
+                                    change_item_mp(materiaprima_orig, orcamento_bu, input.value);
+                                };
+                                label.innerHTML += materiaprima[8];
+                                demarcacao.appendChild(input);
+                                demarcacao.appendChild(label);
                                 // coluna de remover
                                 remover.innerHTML = "REMOVER";
                                 remover.className = "remove";
                                 remover.onclick = function () 
                                 {
-                                    var orcamento_modificado = JSON.parse(JSON.stringify(orcamento));
-                                    orcamento_modificado[2][0] = orcamento_modificado[2][0].slice(0, 3);
-                                    remover_item_mp(materiaprima_orig, orcamento_modificado);
+                                    var index = findIndex(orcamento_bu[2], mp.slice(0, 4));
+                                    orcamento_bu[2][index] = orcamento_bu[2][index].slice(0, 4);
+                                    remover_item_mp(materiaprima_orig, orcamento_bu);
                                 };
                                 // row de materia prima
                                 var row_table2 = document.createElement("tr");
@@ -310,6 +325,15 @@ function remover_item_mp(mp, orcamento)
     var index = findIndex(orcamentos_novo, orcamento);
     var index2 = findIndex(orcamentos_novo[index][2], mp);
     orcamentos_novo[index][2].splice(index2, 1);
+    sessionStorage.setItem("orcamentos", JSON.stringify(orcamentos_novo));
+    window.location.reload();
+}
+function change_item_mp(mp, orcamento, value)
+{
+    var orcamentos_novo = JSON.parse(sessionStorage.getItem('orcamentos'));
+    var index = findIndex(orcamentos_novo, orcamento);
+    var index2 = findIndex(orcamentos_novo[index][2], mp);
+    orcamentos_novo[index][2][index2][3] = value;
     sessionStorage.setItem("orcamentos", JSON.stringify(orcamentos_novo));
     window.location.reload();
 }

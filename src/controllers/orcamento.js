@@ -169,7 +169,7 @@ orcamento.salva = (req, res) =>
 														{
 															for(let mp of produto[2])
 															{
-																conn.query('INSERT INTO materia_prima_do_produto set codigo_mp = ?, codigo_pr = ?, qtd = ?', [mp[0], id_produto[0].id, mp[1]], (err, rows) =>
+																conn.query('INSERT INTO materia_prima_do_produto set codigo_mp = ?, codigo_pr = ?, qtd = ?, intervalo = ?', [mp[0], id_produto[0].id, mp[1], mp[3]], (err, rows) =>
 																{
 																	if(err)
 																	{
@@ -307,14 +307,12 @@ orcamento.pdf = (req, res) =>
 												if(altura >= 680 && altura < 710)
 												{
 													altura = 710;
-													doc.fontSize(10).text('Código: '+row.codigo, 60, altura);
-													doc.fontSize(10).text('Nome: '+(row.nome.length > 25 ? row.nome.substring(0, 25)+"..." : row.nome), 130, altura);
+													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
 													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 												}
 												else
 												{
-													doc.fontSize(10).text('Código: '+row.codigo, 60, altura);
-													doc.fontSize(10).text('Nome: '+(row.nome.length > 25 ? row.nome.substring(0, 25)+"..." : row.nome), 130, altura);
+													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
 													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 												}
 											}
@@ -323,20 +321,23 @@ orcamento.pdf = (req, res) =>
 												if(altura >= 680 && altura < 710)
 												{
 													altura = 710;
-													doc.fontSize(10).text('Código: '+row.codigo, 60, altura);
-													doc.fontSize(10).text('Nome: '+(row.nome.length > 25 ? row.nome.substring(0, 25)+"..." : row.nome), 130, altura);
-													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
-													doc.fontSize(10).text(parseInt((parseFloat(row.qtd)/parseFloat(row.intervalo)+1))+" "+row.demarcacao.substring(0, 10), 470, altura);
-												}
-												else
-												{
-													doc.fontSize(10).text('Código: '+row.codigo, 60, altura);
-													doc.fontSize(10).text('Nome: '+(row.nome.length > 25 ? row.nome.substring(0, 25)+"..." : row.nome), 130, altura);
+													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
 													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 													var qtd_mp = parseFloat(row.qtd);
 													var intervalo = parseFloat(row.intervalo);
 													var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
-													doc.fontSize(10).text(parseInt((qtd_mp/intervalo)+resto)+" "+row.demarcacao.substring(0, 10), 470, altura);
+													var final = row.intervalo_final == 0 ? parseInt((qtd_mp/intervalo)+resto) : row.intervalo_final; 
+													doc.fontSize(10).text(final+" "+row.demarcacao.substring(0, 10), 470, altura);
+												}
+												else
+												{
+													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
+													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
+													var qtd_mp = parseFloat(row.qtd);
+													var intervalo = parseFloat(row.intervalo);
+													var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
+													var final = row.intervalo_final == 0 ? parseInt((qtd_mp/intervalo)+resto) : row.intervalo_final; 
+													doc.fontSize(10).text(final+" "+row.demarcacao.substring(0, 10), 470, altura);
 												}
 											}
 										});
@@ -371,9 +372,14 @@ orcamento.pdf = (req, res) =>
 										doc.moveDown();
 										doc.fontSize(8).text(text);
 									});
+									doc.fontSize(10).text('Valor Total: '+transform_to_preco(orcamento.valor_total));
+									doc.moveDown();
+									doc.fontSize(8).text('Forma de pagamento: '+orcamento.forma_pagamento);
 								}
-								doc.fontSize(11).text('Valor Total: '+transform_to_preco(orcamento.valor_total), {align:"right"});
-								doc.fontSize(11).text('Forma de pag.: '+orcamento.forma_pagamento, {align:"right"});
+								doc.moveDown();
+								doc.fontSize(8).text('ATT. Emerson Santos', {align:"right"});
+								doc.moveDown();
+								doc.fontSize(8).text('(43)3253-5424/9808-0106', {align:"right"});
 							}, 3000);
 							// finalizando
 							setTimeout(() => 
