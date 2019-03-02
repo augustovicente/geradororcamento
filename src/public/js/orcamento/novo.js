@@ -90,7 +90,7 @@ function adicionar_produto()
             if(sessionStorage.getItem('orcamentos') != undefined && sessionStorage.getItem('orcamentos') != "" && sessionStorage.getItem('orcamentos') != "null")
             {
                 var orcamentos = JSON.parse(sessionStorage.getItem('orcamentos'));
-                var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, []];
+                var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, [], document.getElementById("especificacao_produto").value];
                 orcamentos.push(orcamento);
                 sessionStorage.setItem("orcamentos", JSON.stringify(orcamentos));
                 window.location.reload();
@@ -98,7 +98,7 @@ function adicionar_produto()
             else
             {
                 var orcamentos = [];
-                var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, []];
+                var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, [], document.getElementById("especificacao_produto").value];
                 orcamentos.push(orcamento);
                 sessionStorage.setItem("orcamentos", JSON.stringify(orcamentos));
                 window.location.reload();    
@@ -107,7 +107,7 @@ function adicionar_produto()
         else
         {
             var orcamentos = [];
-            var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, []];
+            var orcamento = [document.getElementById("nome_produto").value, orcamentos.length, [], document.getElementById("especificacao_produto").value];
             orcamentos.push(orcamento);
             sessionStorage.setItem("orcamentos", JSON.stringify(orcamentos));
             window.location.reload();
@@ -133,6 +133,9 @@ function carregar(dados)
                 // nome do produto
                 var produto = document.createElement("td");
                 produto.innerHTML = orcamento[0];
+                // especificação do produto
+                var especificacao = document.createElement("td");
+                especificacao.innerHTML = (orcamento[3].length > 25 ? orcamento[3].substring(0, 25)+"..." : orcamento[3]);
                 // sub total do produo
                 var sub_total = document.createElement("td");
                 sub_total.id = "produto"+orcamento[1]+"st";
@@ -148,6 +151,7 @@ function carregar(dados)
                 var row_table = document.createElement("tr");
                 row_table.id = "produto"+orcamento[1];
                 row_table.appendChild(produto);
+                row_table.appendChild(especificacao);
                 row_table.appendChild(sub_total);
                 row_table.appendChild(remover);
                 // adicionado à tabela

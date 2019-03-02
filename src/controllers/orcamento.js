@@ -151,7 +151,7 @@ orcamento.salva = (req, res) =>
 									{
 										setTimeout(() => 
 										{
-											conn.query('INSERT INTO produto_orcamento set codigo_or = ?, nome = ?', [id_orcamento[0].id, produto[0]], (err, rows) =>
+											conn.query('INSERT INTO produto_orcamento set codigo_or = ?, nome = ?, especificacao = ?', [id_orcamento[0].id, produto[0], produto[3]], (err, rows) =>
 											{
 												if(err) 
 												{
@@ -247,7 +247,7 @@ orcamento.pdf = (req, res) =>
 				}
 				else
 				{
-					conn.query("select pr.nome as nome, pr.codigo as cod from produto_orcamento pr where pr.codigo_or = "+id, (err, produtos) => 
+					conn.query("select pr.nome as nome, pr.codigo as cod, pr.especificacao from produto_orcamento pr where pr.codigo_or = "+id, (err, produtos) => 
 					{
 						if(err) 
 						{
@@ -299,6 +299,8 @@ orcamento.pdf = (req, res) =>
 									{	
 										altura += 15;
 										doc.fontSize(12).text('Produto: '+produto.nome, 55, altura);
+										altura += 15;
+										doc.fontSize(11).text('Especificação: '+produto.especificacao, 55, altura);
 										materia_prima.forEach(row => 
 										{
 											altura += 15;
@@ -308,12 +310,10 @@ orcamento.pdf = (req, res) =>
 												{
 													altura = 710;
 													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
-													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 												}
 												else
 												{
 													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
-													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 												}
 											}
 											else if(row.especifica == 1)
@@ -322,7 +322,6 @@ orcamento.pdf = (req, res) =>
 												{
 													altura = 710;
 													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
-													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 													var qtd_mp = parseFloat(row.qtd);
 													var intervalo = parseFloat(row.intervalo);
 													var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
@@ -332,7 +331,6 @@ orcamento.pdf = (req, res) =>
 												else
 												{
 													doc.fontSize(10).text('Nome: '+row.nome, 60, altura);
-													doc.fontSize(10).text('Quantidade: '+row.qtd +" "+(row.unidade.length > 25 ? row.unidade.substring(0, 25)+"..." : row.unidade), 340, altura);
 													var qtd_mp = parseFloat(row.qtd);
 													var intervalo = parseFloat(row.intervalo);
 													var resto = ((qtd_mp/intervalo) % 2) == 0 ? 1 : 2;
