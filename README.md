@@ -1,7 +1,8 @@
-# Plataforma de orçamentos
+# Budget Management Platform
 
-Este projeto visa automatizar a demanda de gerar orçamentos, cujo eram feitos manualmente nesta empresa.
-Além disso, o projeto proporciona um controle sobre o estoque gerado.
+The **Budget Management Platform** project aims to automate the process of generating budgets, which was previously done manually in this company.
+Additionally, the project provides control over the generated inventory, ensuring better tracking and management.
+
 
 ## Prerequisites
 
